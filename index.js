@@ -3,7 +3,7 @@ const btn1 = document.getElementById('prev');
 const btn2 = document.getElementById('next');
 const myWrapper = document.getElementById('wrapper');
 const mySlideItems = document.getElementsByClassName('slide');
-const itemWidth = 500;
+const itemWidth = 450;
 
 function myCarousel(wrapper, slideItems, widthOfItem, prevBtn, nextBtn) {
   const indexSize = slideItems.length - 1;
@@ -17,6 +17,7 @@ function myCarousel(wrapper, slideItems, widthOfItem, prevBtn, nextBtn) {
   let myInterval;
   let allowNextSlide = true;// during the process of transition it remains false after each slide transition it goes back to true to allow sliding
   let direction = 1; // if the user clickes next/prev it keeps moving that direction till the user clicks a diff. direction
+  const indicator = document.getElementsByClassName('indicator');
   // cloning the first and last node
   const clonedFirstNode = slideItems[0].cloneNode(true);
   const clonedLastNode = slideItems[slideItems.length - 1].cloneNode(true);
@@ -52,13 +53,18 @@ function myCarousel(wrapper, slideItems, widthOfItem, prevBtn, nextBtn) {
       if (currentIndex === -1) {
         wrapper.classList.remove('smooth-transition');
         wrapper.style.left = `${posInitial - (indexSize * widthofSlideItem)}px`;
-        currentIndex = 3;
+        currentIndex = indexSize;
       } else { // move to the first slide
         wrapper.classList.remove('smooth-transition');
         wrapper.style.left = `${posInitial + (indexSize * widthofSlideItem)}px`;
         currentIndex = 0;
       }
     }
+    // Indicators
+    for (let i = 0; i < indicator.length; i++) {
+      indicator[i].className = indicator[i].className.replace('active', '');
+    }
+    indicator[currentIndex].className += ' active';
   }
   wrapper.addEventListener('transitionend', checkIndex);
 
